@@ -75,7 +75,7 @@ app.post("/api/story", async (req, res) => {
     res.json({ story });
 
   } catch (error) {
-    console.error("Story error:", error.message);
+    console.error("Story error:", error);
     res.status(500).json({
       error: error.message || "कहानी बनाने में समस्या हुई।"
     });
