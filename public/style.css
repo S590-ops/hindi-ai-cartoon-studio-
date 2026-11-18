@@ -1,0 +1,49 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #101827;
+  color: white;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+}
+
+h1 {
+  color: #a78bfa;
+  text-align: center;
+}
+
+p {
+  color: #cbd5e1;
+  text-align: center;
+}
+
+.card {
+  background: #1e293b;
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 14px;
+}
+
+input, textarea, button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+button {
+  background: #7c3aed;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
