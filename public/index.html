@@ -51,8 +51,8 @@
     const generateButton = document.getElementById("generateStory");
     const storyStatus = document.getElementById("storyStatus");
     const storyResult = document.getElementById("storyResult");
-
-    generateButton.addEventListener("click", async () => {
+const storyText = document.getElementById("storyText");
+    ", async () => {
       const topic = topicInput.value.trim();
 
       if (!topic) {
