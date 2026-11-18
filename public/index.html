@@ -30,7 +30,7 @@
     <div class="card">
       <h2>2. हिंदी Voice</h2>
       <textarea id="storyText" placeholder="कहानी यहां आएगी"></textarea>
-      <button>Voice बनाएं</button>
+      <button id="voiceButton">Voice बनाएं</button>
     </div>
 
     <div class="card">
@@ -48,7 +48,7 @@
 
   <script>
     const topicInput = document.getElementById("topic");
-    const generateButton = document.getElementById("generateStory")
+    const generateButton = document.getElementById("generateStory");
     const storyStatus = document.getElementById("storyStatus");
     const storyResult = document.getElementById("storyResult");
 const storyText = document.getElementById("storyText");
@@ -89,6 +89,24 @@ const storyText = document.getElementById("storyText");
         generateButton.disabled = false;
       }
     });
+    const voiceButton = document.getElementById("voiceButton");
+
+voiceButton.addEventListener("click", () => {
+    const text = storyText.value.trim();
+
+    if (!text) {
+        alert("पहले कहानी बनाएं!");
+        return;
+    }
+
+    const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = "hi-IN";
+    speech.rate = 0.9;
+    speech.pitch = 1;
+
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(speech);
+});
   </script>
 </body>
 </html>
