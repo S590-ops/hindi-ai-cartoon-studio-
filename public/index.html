@@ -14,8 +14,17 @@
 
     <div class="card">
       <h2>1. कहानी बनाएं</h2>
-      <input type="text" placeholder="कहानी का विषय लिखें">
-      <button>कहानी बनाएं</button>
+
+      <input
+        type="text"
+        id="topic"
+        placeholder="कहानी का विषय लिखें"
+      >
+
+      <button id="generateStory">कहानी बनाएं</button>
+
+      <p id="storyStatus"></p>
+      <div id="storyResult"></div>
     </div>
 
     <div class="card">
@@ -36,5 +45,49 @@
       <button>Video तैयार करें</button>
     </div>
   </div>
+
+  <script>
+    const topicInput = document.getElementById("topic");
+    const generateButton = document.getElementById("generateStory");
+    const storyStatus = document.getElementById("storyStatus");
+    const storyResult = document.getElementById("storyResult");
+
+    generateButton.addEventListener("click", async () => {
+      const topic = topicInput.value.trim();
+
+      if (!topic) {
+        storyStatus.textContent = "पहले कहानी का विषय लिखिए।";
+        return;
+      }
+
+      generateButton.disabled = true;
+      storyStatus.textContent = "कहानी बन रही है, कृपया इंतजार करें...";
+      storyResult.textContent = "";
+
+      try {
+        const response = await fetch("/api/story", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ topic })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "कहानी नहीं बन पाई।");
+        }
+
+        storyResult.textContent = data.story || "AI ने खाली जवाब दिया।";
+        storyStatus.textContent = "कहानी तैयार है!";
+
+      } catch (error) {
+        storyStatus.textContent = "समस्या: " + error.message;
+      } finally {
+        generateButton.disabled = false;
+      }
+    });
+  </script>
 </body>
 </html>
