@@ -5,9 +5,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hindi AI Cartoon Studio</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Hindi AI Cartoon Studio</h1>
-  <p>अपनी मजेदार हिंदी कार्टून कहानी बनाएं!</p>
+  <div class="container">
+    <h1>🎬 Hindi AI Cartoon Studio</h1>
+    <p>अपनी मजेदार हिंदी कार्टून कहानी बनाएं!</p>
+
+    <div class="card">
+      <h2>1. कहानी बनाएं</h2>
+      <input type="text" placeholder="कहानी का विषय लिखें">
+      <button>कहानी बनाएं</button>
+    </div>
+
+    <div class="card">
+      <h2>2. हिंदी Voice</h2>
+      <textarea placeholder="कहानी यहां आएगी"></textarea>
+      <button>Voice बनाएं</button>
+    </div>
+
+    <div class="card">
+      <h2>3. Cartoon Scene</h2>
+      <textarea placeholder="Cartoon scene prompt"></textarea>
+      <button>Scene बनाएं</button>
+    </div>
+
+    <div class="card">
+      <h2>4. Final Video</h2>
+      <input type="file" accept="video/*" multiple>
+      <button>Video तैयार करें</button>
+    </div>
+  </div>
 </body>
 </html>
