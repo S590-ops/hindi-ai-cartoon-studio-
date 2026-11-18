@@ -29,7 +29,7 @@
 
     <div class="card">
       <h2>2. हिंदी Voice</h2>
-      <textarea placeholder="कहानी यहां आएगी"></textarea>
+      <textarea id="storyText" placeholder="कहानी यहां आएगी"></textarea>
       <button>Voice बनाएं</button>
     </div>
 
@@ -48,11 +48,11 @@
 
   <script>
     const topicInput = document.getElementById("topic");
-    const generateButton = document.getElementById("generateStory");
+    const generateButton = document.getElementById("generateStory")
     const storyStatus = document.getElementById("storyStatus");
     const storyResult = document.getElementById("storyResult");
 const storyText = document.getElementById("storyText");
-    ", async () => {
+    generateButton.addEventListener("click", async () => {
       const topic = topicInput.value.trim();
 
       if (!topic) {
@@ -80,6 +80,7 @@ const storyText = document.getElementById("storyText");
         }
 
         storyResult.textContent = data.story || "AI ने खाली जवाब दिया।";
+        storyText.value = data.story || "";
         storyStatus.textContent = "कहानी तैयार है!";
 
       } catch (error) {
