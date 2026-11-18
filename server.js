@@ -81,7 +81,69 @@ app.post("/api/story", async (req, res) => {
     });
   }
 });
+app.post("/api/scenes", async (req, res) => {
+  try {
+    const story = String(req.body.story || "").trim();
+    const key = process.env.GEMINI_API_KEY;
 
+    if (!story) {
+      return res.status(400).json({
+        error: "पहले कहानी बनाइए।"
+      });
+    }
+
+    if (!key) {
+      return res.status(500).json({
+        error: "GEMINI_API_KEY सेट नहीं है।"
+      });
+    }
+
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/interactions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": key
+        },
+        body: JSON.stringify({
+          model: "gemini-3.5-flash-lite",
+          input:
+            "इस हिंदी कहानी के 5 अलग-अलग कार्टून दृश्यों के लिए विस्तृत image prompts बनाओ। हर दृश्य में पात्रों का रूप एक जैसा रखना। जवाब हिंदी में दो। कहानी:\n" +
+            story
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Gemini scenes error:", data);
+      return res.status(response.status).json({
+        error: data.error?.message || "Scenes नहीं बन पाए।"
+      });
+    }
+
+    const scenes = (data.steps || [])
+      .filter(step => step.type === "model_output")
+      .flatMap(step => step.content || [])
+      .filter(item => item.type === "text")
+      .map(item => item.text)
+      .join("\n");
+
+    if (!scenes) {
+      throw new Error("AI ने खाली जवाब दिया।");
+    }
+
+    res.json({ scenes });
+
+  } catch (error) {
+    console.error("Scenes error:", error);
+    res.status(500).json({
+      error: error.message || "Scenes बनाने में समस्या हुई।"
+    });
+  }
+});
 app.listen(PORT, "0.0.0.0", () => {
   console.log("Server running on port " + PORT);
 });
