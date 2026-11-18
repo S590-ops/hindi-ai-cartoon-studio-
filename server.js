@@ -43,7 +43,7 @@ app.post("/api/story", async (req, res) => {
           "x-goog-api-key": key
         },
         body: JSON.stringify({
-          model: "gemini-3.8-flash",
+          model: "gemini-3.5-flash-lite",
           input:
             "हिंदी में एक मौलिक, मजेदार और परिवार के अनुकूल कार्टून कहानी लिखो। विषय: " +
             topic +
