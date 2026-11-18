@@ -94,7 +94,7 @@ const storyText = document.getElementById("storyText");
 voiceButton.addEventListener("click", () => {
     
 const text = storyText.value
-    .replace(/[~`|•√π§{}✓¥°®]/g, " ")
+    .replace(/[~`|•√π§{}✓¥°®*]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
     if (!text) {
