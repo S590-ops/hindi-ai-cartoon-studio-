@@ -92,8 +92,11 @@ const storyText = document.getElementById("storyText");
     const voiceButton = document.getElementById("voiceButton");
 
 voiceButton.addEventListener("click", () => {
-    const text = storyText.value.trim();
-
+    
+const text = storyText.value
+    .replace(/[~`|•√π§{}✓¥°®]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
     if (!text) {
         alert("पहले कहानी बनाएं!");
         return;
