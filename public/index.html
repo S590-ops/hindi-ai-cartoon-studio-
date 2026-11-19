@@ -56,11 +56,7 @@
   <button id="generateImage">तस्वीर बनाएं</button>
 
   <p id="imageStatus"></p>
-
-  <img
-    id="generatedImage"
-    style="max-width:100%; display:none;"
-    alt="AI Cartoon Image"
+<div id="imageGallery"></div>
   >
     </div>
     <div class="card">
@@ -157,7 +153,8 @@ generateScenes.textContent = "⏳ Scenes बन रहे हैं...";
 });
     const imagePrompt = document.getElementById("imagePrompt");
 const generateImage = document.getElementById("generateImage");
-const imageStatus = document.getElementById("imageStatus");
+const imageGallery = document.getElementById("imageGallery");
+    const imageStatus = document.getElementById("imageStatus");
 const generatedImage = document.getElementById("generatedImage");
 
 generateImage.addEventListener("click", async () => {
@@ -185,10 +182,14 @@ generateImage.addEventListener("click", async () => {
     if (!response.ok) {
       throw new Error(data.error || "तस्वीर नहीं बन पाई।");
     }
+const img = document.createElement("img");
+img.src = data.image;
+img.style.width = "100%";
+img.style.maxWidth = "400px";
+img.style.margin = "10px 0";
+imageGallery.appendChild(img);
 
-    generatedImage.src = data.image;
-    generatedImage.style.display = "block";
-    imageStatus.textContent = "तस्वीर तैयार है!";
+imageStatus.textContent = "तस्वीर तैयार है!";
   } catch (error) {
     imageStatus.textContent = "समस्या: " + error.message;
   } finally {
