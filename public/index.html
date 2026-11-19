@@ -45,6 +45,25 @@
   ></textarea>
   </div>
     <div class="card">
+  <h2>4. AI Cartoon Image</h2>
+
+  <input
+    type="text"
+    id="imagePrompt"
+    placeholder="तस्वीर का वर्णन लिखें"
+  >
+
+  <button id="generateImage">तस्वीर बनाएं</button>
+
+  <p id="imageStatus"></p>
+
+  <img
+    id="generatedImage"
+    style="max-width:100%; display:none;"
+    alt="AI Cartoon Image"
+  >
+    </div>
+    <div class="card">
       <h2>4. Final Video</h2>
       <input type="file" accept="video/*" multiple>
       <button>Video तैयार करें</button>
@@ -134,6 +153,46 @@ generateScenes.textContent = "⏳ Scenes बन रहे हैं...";
     generateScenes.disabled = false;
     generateScenes.textContent = "Scenes बनाएं";
     generateScenes.style.backgroundColor = "";
+  }
+});
+    const imagePrompt = document.getElementById("imagePrompt");
+const generateImage = document.getElementById("generateImage");
+const imageStatus = document.getElementById("imageStatus");
+const generatedImage = document.getElementById("generatedImage");
+
+generateImage.addEventListener("click", async () => {
+  const prompt = imagePrompt.value.trim();
+
+  if (!prompt) {
+    imageStatus.textContent = "पहले तस्वीर का वर्णन लिखिए।";
+    return;
+  }
+
+  generateImage.disabled = true;
+  imageStatus.textContent = "तस्वीर तैयार हो रही है...";
+
+  try {
+    const response = await fetch("/api/generate-image", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ prompt })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "तस्वीर नहीं बन पाई।");
+    }
+
+    generatedImage.src = data.image;
+    generatedImage.style.display = "block";
+    imageStatus.textContent = "तस्वीर तैयार है!";
+  } catch (error) {
+    imageStatus.textContent = "समस्या: " + error.message;
+  } finally {
+    generateImage.disabled = false;
   }
 });
     const voiceButton = document.getElementById("voiceButton");
