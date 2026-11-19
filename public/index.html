@@ -26,7 +26,11 @@
       <p id="storyStatus"></p>
       <div id="storyResult"></div>
     </div>
-
+<div class="card">
+  <h2>2. हिंदी Voice</h2>
+  <textarea id="storyText" placeholder="कहानी यहां आएगी"></textarea>
+  <button id="voiceButton">Voice बनाएं</button>
+</div>
   <div class="card">
   <h2>3. Cartoon Scene</h2>
 
@@ -40,13 +44,6 @@
     rows="12"
   ></textarea>
   </div>
-
-    <div class="card">
-      <h2>3. Cartoon Scene</h2>
-      <textarea placeholder="Cartoon scene prompt"></textarea>
-      <button>Scene बनाएं</button>
-    </div>
-
     <div class="card">
       <h2>4. Final Video</h2>
       <input type="file" accept="video/*" multiple>
@@ -97,6 +94,45 @@ const storyText = document.getElementById("storyText");
         generateButton.disabled = false;
       }
     });
+    const generateScenes = document.getElementById("generateScenes");
+const sceneStatus = document.getElementById("sceneStatus");
+const sceneResult = document.getElementById("sceneResult");
+
+generateScenes.addEventListener("click", async () => {
+  const story = storyText.value.trim();
+
+  if (!story) {
+    sceneStatus.textContent = "पहले कहानी बनाइए!";
+    return;
+  }
+
+  generateScenes.disabled = true;
+  sceneStatus.textContent = "5 Cartoon Scenes बन रहे हैं...";
+  sceneResult.value = "";
+
+  try {
+    const response = await fetch("/api/scenes", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ story })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Scenes नहीं बन पाए।");
+    }
+
+    sceneResult.value = data.scenes || "कोई Scene नहीं मिला।";
+    sceneStatus.textContent = "5 Cartoon Scenes तैयार हैं!";
+  } catch (error) {
+    sceneStatus.textContent = "समस्या: " + error.message;
+  } finally {
+    generateScenes.disabled = false;
+  }
+});
     const voiceButton = document.getElementById("voiceButton");
 
 voiceButton.addEventListener("click", () => {
