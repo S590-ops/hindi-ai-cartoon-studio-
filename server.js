@@ -144,6 +144,68 @@ app.post("/api/scenes", async (req, res) => {
     });
   }
 });
+
+app.post("/api/generate-image", async (req, res) => {
+  try {
+    const prompt = String(req.body.prompt || "").trim();
+
+    const token = process.env.CLOUDFLARE_API_TOKEN;
+    const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+
+    if (!prompt || prompt.length > 2048) {
+      return res.status(400).json({
+        error: "सही image prompt लिखिए (अधिकतम 2048 अक्षर)।"
+      });
+    }
+
+    if (!token || !accountId) {
+      return res.status(500).json({
+        error: "Cloudflare की Environment Variables सेट नहीं हैं।"
+      });
+    }
+
+    const response = await fetch(
+      `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/black-forest-labs/flux-1-schnell`,
+      {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          steps: 4
+        })
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      console.error("Cloudflare image error:", data.errors);
+      return res.status(502).json({
+        error: "तस्वीर नहीं बन पाई। Cloudflare API में समस्या हुई।"
+      });
+    }
+
+    const image = data.result?.image;
+
+    if (!image) {
+      throw new Error("Image response खाली मिला।");
+    }
+
+    res.json({
+      image: `data:image/jpeg;base64,${image}`
+    });
+
+  } catch (error) {
+    console.error("Image generation error:", error);
+    res.status(500).json({
+      error: "तस्वीर बनाने में समस्या हुई।"
+    });
+  }
+});
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log("Server running on port " + PORT);
 });
