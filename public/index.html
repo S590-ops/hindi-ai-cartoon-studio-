@@ -105,7 +105,8 @@ generateScenes.addEventListener("click", async () => {
     sceneStatus.textContent = "पहले कहानी बनाइए!";
     return;
   }
-
+generateScenes.textContent = "⏳ Scenes बन रहे हैं...";
+  generateScenes.style.backgroundColor = "#ff9800";
   generateScenes.disabled = true;
   sceneStatus.textContent = "5 Cartoon Scenes बन रहे हैं...";
   sceneResult.value = "";
@@ -131,6 +132,8 @@ generateScenes.addEventListener("click", async () => {
     sceneStatus.textContent = "समस्या: " + error.message;
   } finally {
     generateScenes.disabled = false;
+    generateScenes.textContent = "Scenes बनाएं";
+    generateScenes.style.backgroundColor = "";
   }
 });
     const voiceButton = document.getElementById("voiceButton");
