@@ -40,6 +40,7 @@
 
   <textarea
     id="sceneResult"
+    <div id="sceneGallery"></div>
     placeholder="आपके 5 Cartoon Scenes यहां आएंगे"
     rows="12"
   ></textarea>
@@ -142,6 +143,31 @@ generateScenes.textContent = "⏳ Scenes बन रहे हैं...";
     }
 
     sceneResult.value = data.scenes || "कोई Scene नहीं मिला।";
+    sceneGallery.innerHTML = "";
+
+const scenes = data.scenes
+  .split(/दृश्य\s*\d+|Scene\s*\d+/i)
+  .filter(scene => scene.trim());
+
+scenes.forEach((scene, index) => {
+  const card = document.createElement("div");
+  card.style.background = "#ffffff";
+  card.style.color = "#222222";
+  card.style.padding = "15px";
+  card.style.margin = "12px 0";
+  card.style.borderRadius = "10px";
+
+  const heading = document.createElement("h3");
+  heading.textContent = "Scene " + (index + 1);
+
+  const description = document.createElement("p");
+  description.textContent = scene.trim();
+
+  card.appendChild(heading);
+  card.appendChild(description);
+  sceneGallery.appendChild(card);
+});
+    const sceneGallery = document.getElementById("sceneGallery");
     sceneStatus.textContent = "5 Cartoon Scenes तैयार हैं!";
   } catch (error) {
     sceneStatus.textContent = "समस्या: " + error.message;
